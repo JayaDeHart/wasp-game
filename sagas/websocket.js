@@ -1,56 +1,54 @@
-import { take, put, call, apply, delay, takeEvery } from 'redux-saga/effects';
+import { take, put, call, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import createSocketConnection from '../util/createConnection';
 
+function nameSelector(state) {
+  return state.self.name;
+}
+
 function createSocketChannel(socket) {
   return eventChannel((emit) => {
-    const pingHandler = (event) => {
-      emit(event);
+    const boardStateHandler = (event) => {
+      emit({ type: 'board', event });
+    };
+
+    const rolesHandler = (event) => {
+      emit({ type: 'setRoles', event });
     };
 
     const errorHandler = (errorEvent) => {
       emit(new Error(errorEvent.reason));
     };
 
-    socket.on('server-state-update', pingHandler);
+    socket.on('server-state-update', boardStateHandler);
+    socket.on('setRoles', rolesHandler);
     socket.on('error', errorHandler);
 
     const unsubscribe = () => {
-      socket.off('ping', pingHandler);
+      socket.off('server-state-update', boardStateHandler);
     };
 
     return unsubscribe;
   });
 }
 
-function* distributer(action, socket) {
-  if ('repeat' in action.payload) {
-    const type = action.type;
-    const data = action.payload.data;
-    action = { type, payload: data };
-  }
-  if (!('repeat' in action.payload)) {
-    socket.emit('board-state-update', action);
-  }
-}
-
-function* sendActionsToServer(socket) {
-  yield takeEvery('*', distributer);
-}
-
 function* dispatchFromServer() {
   const socket = yield call(createSocketConnection);
   const socketChannel = yield call(createSocketChannel, socket);
-  yield call(sendActionsToServer, socket);
 
   while (true) {
     try {
-      const action = yield take(socketChannel);
-      const payload = {
-        data: action.payload,
-        repeat: true,
-      };
-      yield put({ type: action.type, payload });
+      const { type, event } = yield take(socketChannel);
+      // yield put(action);
+      switch (type) {
+        case 'board':
+          yield put(event);
+          break;
+        case 'setRoles':
+          break;
+        default:
+        // code block
+      }
     } catch (err) {
       console.error('socket error:', err);
     }

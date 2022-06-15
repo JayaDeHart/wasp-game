@@ -33,23 +33,21 @@ function createSocketChannel(socket) {
 }
 
 function* distributer(action, socket) {
-  console.log(socket);
   socket.emit('board-state-update', action);
 }
 
 //spy1
 function* sendActionsToServer(socket) {
-  const requestChan = yield actionChannel('*');
   while (true) {
-    const action = yield take(requestChan);
-    yield call(distributer, action, socket);
+    const action = yield take('*');
+    console.log(action);
+    yield fork(distributer, action, socket);
   }
 }
 
 //spy2
 function* dispatchFromServer(socket) {
   try {
-    console.log('dispatch from server');
     const socketChannel = yield call(createSocketChannel, socket);
 
     while (true) {
@@ -69,9 +67,7 @@ export default function* rootSaga() {
   try {
     const socket = yield call(createSocketConnection);
     yield fork(sendActionsToServer, socket);
-    yield call(dispatchFromServer, socket);
-
-    //something about the calling vs forking vs order can be used to figure this shit out
+    yield fork(dispatchFromServer, socket);
   } catch (e) {
     console.log(e);
   }
