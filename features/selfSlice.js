@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  name: null,
+  name: 'unset',
   role: null,
+  host: false,
+  lobby: '/initial',
 };
 
 const selfSlice = createSlice({
@@ -15,9 +17,15 @@ const selfSlice = createSlice({
     setRole: (state, action) => {
       state.role = action.payload;
     },
+    setHost: (state, action) => {
+      state.host = action.payload;
+    },
+    setLobby: (state, action) => {
+      state.lobby = action.payload;
+    },
   },
 });
 
-export const { setName, setRole } = selfSlice.actions;
+export const { setName, setRole, setHost, setLobby } = selfSlice.actions;
 
 export default selfSlice.reducer;

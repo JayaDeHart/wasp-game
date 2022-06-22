@@ -6,6 +6,10 @@ function nameSelector(state) {
   return state.self.name;
 }
 
+function nameSpaceSelector(state) {
+  return state.self.lobby;
+}
+
 function createSocketChannel(socket) {
   return eventChannel((emit) => {
     const boardStateHandler = (event) => {
@@ -13,6 +17,7 @@ function createSocketChannel(socket) {
     };
 
     const rolesHandler = (event) => {
+      console.log(event);
       emit({ type: 'setRoles', event });
     };
 
@@ -26,6 +31,7 @@ function createSocketChannel(socket) {
 
     const unsubscribe = () => {
       socket.off('server-state-update', boardStateHandler);
+      socket.off('setRoles', rolesHandler);
     };
 
     return unsubscribe;
@@ -33,7 +39,8 @@ function createSocketChannel(socket) {
 }
 
 function* dispatchFromServer() {
-  const socket = yield call(createSocketConnection);
+  const lobby = yield select(nameSpaceSelector);
+  const socket = yield call(createSocketConnection, lobby);
   const socketChannel = yield call(createSocketChannel, socket);
 
   while (true) {
@@ -45,6 +52,12 @@ function* dispatchFromServer() {
           yield put(event);
           break;
         case 'setRoles':
+          const myName = yield select(nameSelector);
+          for (let x = 0; x < event.length; x++) {
+            if (myName === event[x].name) {
+              yield put({ type: 'self/setRole', payload: event[x].role });
+            }
+          }
           break;
         default:
         // code block

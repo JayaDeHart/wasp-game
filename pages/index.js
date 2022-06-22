@@ -1,47 +1,37 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import styles from '../styles/Home.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { useContext, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { setHost, setLobby } from '../features/selfSlice';
 import { SocketContext } from '../context/socketContext';
-import { setName } from '../features/selfSlice';
+import { useContext } from 'react';
 
 export default function Home() {
-  const inputRef = useRef(null);
-  const { socket } = useContext(SocketContext);
-  const { players } = useSelector((state) => state.board);
+  const router = useRouter();
   const dispatch = useDispatch();
+  const { socket } = useContext(SocketContext);
 
-  function click() {
-    socket.emit('board-state-update', {
-      type: 'board/addPlayer',
-      payload: { name: 'Jeff' },
-    });
+  function handleCreate() {
+    const code = (Math.random().toString(36) + '00000000000000000').slice(2, 8);
+    dispatch(setHost(true));
+    dispatch(setLobby(code));
+    router.push('/hostLobby');
+    socket.emit('create', code);
   }
 
-  function setName(e) {
-    e.preventDefault();
-    const name = inputRef.current['input'].value;
-    socket.emit('join', name);
-    dispatch(setName(name));
-  }
-
-  function start() {
-    socket.emit('start');
+  function handleJoin() {
+    dispatch(setHost(false));
+    router.push('/playerLobby');
   }
 
   return (
-    <div className={styles.container}>
-      <button onClick={click}>Click Me!</button>
-      {players.map((player, index) => (
-        <div key={index}>{JSON.stringify(player)}</div>
-      ))}
-      <form ref={inputRef}>
-        <p>Name:</p>
-        <input name="input" type="text"></input>
-        <button onClick={setName}>Submit</button>
-      </form>
-      <button onClick={start}>Start</button>
+    <div className="flex">
+      <button className="border-2" onClick={handleCreate}>
+        Create a lobby
+      </button>
+      <button className="border-2" onClick={handleJoin}>
+        Join a lobby
+      </button>
     </div>
   );
 }
