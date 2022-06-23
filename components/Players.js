@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
 
 function Players() {
   const players = useSelector((state) => state.board.players);

@@ -15,9 +15,12 @@ const boardSlice = createSlice({
     addPlayer: (state, action) => {
       state.players.push(action.payload);
     },
+    setPlayers: (state, action) => {
+      state.players = action.payload;
+    },
   },
 });
 
-export const { addPlayer, addResource } = boardSlice.actions;
+export const { addPlayer, addResource, setPlayers } = boardSlice.actions;
 
 export default boardSlice.reducer;

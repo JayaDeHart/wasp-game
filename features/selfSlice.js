@@ -4,7 +4,7 @@ const initialState = {
   name: 'unset',
   role: null,
   host: false,
-  lobby: '/initial',
+  lobby: 'initial',
 };
 
 const selfSlice = createSlice({

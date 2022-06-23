@@ -13,4 +13,4 @@ export default configureStore({
   },
   middleware: [saga],
 });
-saga.run(rootSaga);
+// saga.run(rootSaga);

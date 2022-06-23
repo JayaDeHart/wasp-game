@@ -41,6 +41,7 @@ function createSocketChannel(socket) {
 function* dispatchFromServer() {
   const lobby = yield select(nameSpaceSelector);
   const socket = yield call(createSocketConnection, lobby);
+  console.log(socket);
   const socketChannel = yield call(createSocketChannel, socket);
 
   while (true) {
