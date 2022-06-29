@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useContext, useState, useRef } from 'react';
 import { SocketContext } from '../context/socketContext';
 import { setName } from '../features/selfSlice';
+import { useRouter } from 'next/router';
 import Players from '../components/Players';
 
 function hostLobby() {
@@ -12,6 +13,7 @@ function hostLobby() {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const { socket } = useContext(SocketContext);
+  const router = useRouter();
 
   function sendName(e) {
     e.preventDefault();
@@ -20,7 +22,9 @@ function hostLobby() {
     dispatch(setName(name));
   }
 
-  function start() {}
+  function start(e) {
+    socket.emit('start');
+  }
 
   return (
     <div className="flex-col m-2">
@@ -33,11 +37,11 @@ function hostLobby() {
         </button>
       </form>
       <div>Name: {myName}</div>
-      <form>
+      <div>
         <button onClick={start} disabled={myName == 'unset'}>
           Start the game!
         </button>
-      </form>
+      </div>
       <div>Players in lobby</div>
       <Players />
     </div>
