@@ -2,7 +2,7 @@ import { Graphics } from '@inlet/react-pixi';
 import { useCallback } from 'react';
 
 function Hexagon(props) {
-  const { hex } = props;
+  const { hex, updateHex } = props;
   const draw = useCallback(
     (g) => {
       g.lineStyle(0.5, '0x000000');
@@ -12,7 +12,7 @@ function Hexagon(props) {
       g.drawPolygon(corners);
       g.endFill();
     },
-    [hex]
+    [props]
   );
 
   return (
@@ -20,8 +20,7 @@ function Hexagon(props) {
       draw={draw}
       interactive={true}
       mousedown={() => {
-        console.log(hex);
-        hex.setColor('0x8d9db5');
+        updateHex(hex, 'color', '0x8d9db5');
       }}
     />
   );

@@ -3,6 +3,7 @@ import { createSlice, createAction } from '@reduxjs/toolkit';
 const initialState = {
   resources: [],
   players: [],
+  board: null,
 };
 
 const boardSlice = createSlice({
@@ -18,9 +19,13 @@ const boardSlice = createSlice({
     setPlayers: (state, action) => {
       state.players = action.payload;
     },
+    setBoard: (state, action) => {
+      state.board = action.payload;
+    },
   },
 });
 
-export const { addPlayer, addResource, setPlayers } = boardSlice.actions;
+export const { addPlayer, addResource, setPlayers, setBoard } =
+  boardSlice.actions;
 
 export default boardSlice.reducer;
