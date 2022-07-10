@@ -23,7 +23,7 @@ function testicles() {
   const board = useSelector((state) => state.board.board);
 
   useEffect(() => {
-    const testGrid = Grid.hexagon({ radius: 12, center: [12, 12] });
+    const testGrid = Grid.spiral({ radius: 12, center: [12, 12] });
     dispatch(setBoard(testGrid));
   }, []);
 
@@ -56,11 +56,12 @@ function testicles() {
         options={{ backgroundAlpha: 0, antialias: true }}
       >
         {board &&
-          board.map((hex) => (
+          board.map((hex, index) => (
             <Hexagon
               hex={hex}
               key={`${hex.x},${hex.y}`}
               updateHex={updateHex}
+              index={index}
             />
           ))}
       </Stage>

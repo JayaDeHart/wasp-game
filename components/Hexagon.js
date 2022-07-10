@@ -2,7 +2,7 @@ import { Graphics } from '@inlet/react-pixi';
 import { useCallback } from 'react';
 
 function Hexagon(props) {
-  const { hex, updateHex } = props;
+  const { hex, updateHex, index } = props;
   const draw = useCallback(
     (g) => {
       g.lineStyle(0.5, '0x000000');
@@ -21,6 +21,7 @@ function Hexagon(props) {
       interactive={true}
       mousedown={() => {
         updateHex(hex, 'color', '0x8d9db5');
+        console.log(index);
       }}
     />
   );
