@@ -7,7 +7,7 @@ function Players() {
   return (
     <div className="flex-col">
       {players.map((player) => (
-        <p>{player.name}</p>
+        <p key={player}>{player.name}</p>
       ))}
     </div>
   );

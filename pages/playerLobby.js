@@ -4,7 +4,7 @@ import { setLobby, setName } from '../features/selfSlice';
 import Players from '../components/Players';
 import { SocketContext } from '../context/socketContext';
 
-function playerLobby() {
+function PlayerLobby() {
   const { socket } = useContext(SocketContext);
   const roomRef = useRef(null);
   const nameRef = useRef(null);
@@ -39,4 +39,4 @@ function playerLobby() {
   );
 }
 
-export default playerLobby;
+export default PlayerLobby;

@@ -7,7 +7,7 @@ import { setName } from '../features/selfSlice';
 import { useRouter } from 'next/router';
 import Players from '../components/Players';
 
-function hostLobby() {
+function HostLobby() {
   const lobby = useSelector((state) => state.self.lobby);
   const myName = useSelector((state) => state.self.name);
   const dispatch = useDispatch();
@@ -48,4 +48,4 @@ function hostLobby() {
   );
 }
 
-export default hostLobby;
+export default HostLobby;

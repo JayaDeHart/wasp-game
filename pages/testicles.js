@@ -5,6 +5,7 @@ import { Stage, Container, Sprite, Graphics } from '@inlet/react-pixi';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoard } from '../features/boardSlice';
 import Hexagon from '../components/Hexagon';
+import generateBoard from '../util/generateBoard'
 
 let Hex = extendHex({
   size: 17,
@@ -18,12 +19,12 @@ let Hex = extendHex({
 
 const Grid = defineGrid(Hex);
 
-function testicles() {
+function Testicles() {
   const dispatch = useDispatch();
   const board = useSelector((state) => state.board.board);
 
   useEffect(() => {
-    const testGrid = Grid.spiral({ radius: 12, center: [12, 12] });
+    const testGrid = generateBoard()
     dispatch(setBoard(testGrid));
   }, []);
 
@@ -69,4 +70,4 @@ function testicles() {
   );
 }
 
-export default testicles;
+export default Testicles;

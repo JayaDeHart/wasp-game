@@ -33,7 +33,7 @@ ogrid[0].color = '0x000000';
 
 console.log(ogrid[0]);
 
-function generate() {
+function Generate() {
   return (
     <div className="flex justify-center align-middle">
       <Stage
@@ -51,4 +51,4 @@ function generate() {
   );
 }
 
-export default generate;
+export default Generate;
