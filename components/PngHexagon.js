@@ -1,5 +1,6 @@
 import { Sprite } from '@inlet/react-pixi';
 import { useCallback } from 'react';
+import adultury from './adultery.png'
 
 function Hexagon(props) {
   const { hex, updateHex, index } = props;
@@ -16,10 +17,9 @@ function Hexagon(props) {
   );
 
   const point = hex.toPoint();
-    console.log(point)
 
   return (
-    <Sprite image={`/tiles/${hex.tile}`}/>
+    <Sprite image={`./tiles/${hex.tile}.png`} x={point.x} y={point.y} height={30} width={30} />
   );
 }
 

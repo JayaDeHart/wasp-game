@@ -5,6 +5,7 @@ import { Stage, Container, Sprite, Graphics } from '@inlet/react-pixi';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoard } from '../features/boardSlice';
 import Hexagon from '../components/Hexagon';
+import PngHexagon from '../components/PngHexagon';
 import generateBoard from '../util/generateBoard'
 
 let Hex = extendHex({
@@ -58,7 +59,7 @@ function Testicles() {
       >
         {board &&
           board.map((hex, index) => (
-            <Hexagon
+            <PngHexagon
               hex={hex}
               key={`${hex.x},${hex.y}`}
               updateHex={updateHex}
